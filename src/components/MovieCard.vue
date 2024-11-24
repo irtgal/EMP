@@ -1,5 +1,5 @@
 <template>
-    <q-card class="movie-card">
+    <q-card class="movie-card" @click="goToDetails">
         <q-img :src="movie.imageUrl" :alt="movie.title" class="movie-image" ratio="16/9" />
 
         <q-card-section class="movie-info">
@@ -22,9 +22,15 @@
 import { defineProps } from 'vue';
 import { Movie } from '../models';
 import RatingControl from './RatingControl.vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{ movie: Movie }>();
-console.log(props);
+const router = useRouter();
+
+const goToDetails = () => {
+    router.push({ name: 'MovieDetails', params: { id: props.movie.id.toString() } });
+};
+
 </script>
 <style scoped>
 .movie-card {
@@ -38,7 +44,6 @@ console.log(props);
 }
 
 .movie-card:hover {
-    /* box shadow effect */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 

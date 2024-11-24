@@ -7,6 +7,7 @@ import { ref, watch } from 'vue';
 import { useMovieStore } from '../store/movieStore';
 
 const props = defineProps<{ movieId: number; initialRating: number }>();
+console.log(props)
 const rating = ref(props.initialRating);
 
 const movieStore = useMovieStore();

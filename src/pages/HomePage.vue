@@ -1,11 +1,8 @@
 <template>
     <q-page padding>
-        <FilterInput />
-        <MovieList />
+        <div>Home</div>
     </q-page>
 </template>
 
 <script lang="ts" setup>
-import FilterInput from '../components/FilterInput.vue';
-import MovieList from '../components/MovieList.vue';
 </script>
