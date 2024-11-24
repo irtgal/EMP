@@ -4,9 +4,9 @@
 
         <!-- No Movies Found Message -->
         <div v-if="movies.length === 0" class="no-movies">
-            <div class="text-h5 q-mt-md">
+            <q-banner class="bg-grey-3 text-grey-8">
                 No movies found.
-            </div>
+            </q-banner>
         </div>
 
         <!-- Movie List -->

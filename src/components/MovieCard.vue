@@ -3,7 +3,7 @@
         <q-img :src="movie.imageUrl" :alt="movie.title" class="movie-image" ratio="16/9" />
 
         <q-card-section class="movie-info">
-            <div class="movie-title text-h6">{{ movie.title }}</div>
+            <div class="movie-title">{{ movie.title }}</div>
             <div class="movie-footer">
                 <span class="movie-year">{{ movie.releaseYear }}</span>
                 <RatingControl :movieId="movie.id" :initialRating="movie.userRating || 0" />

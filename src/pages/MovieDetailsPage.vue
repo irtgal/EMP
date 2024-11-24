@@ -1,19 +1,23 @@
 <template>
-    <q-page padding>
-        <div v-if="movie">
-            <q-img :src="movie.imageUrl" :alt="movie.title" ratio="16/9" />
-            <div class="text-h4 q-mt-md">{{ movie.title }}</div>
-            <div class="text-subtitle2">{{ movie.releaseYear }} &bullet; {{ movie.duration }} min</div>
-            <div class="text-body1 q-my-md">{{ movie.description }}</div>
-            <div class="q-my-sm">
+    <q-page class="movie-details-page">
+        <div v-if="movie" class="movie-details-container">
+            <q-img :src="movie.imageUrl || BACKUP_IMAGE_URL" :alt="movie.title" class="movie-image" />
+            <div class="movie-title text-h4 q-mt-md">{{ movie.title }}</div>
+            <div class="movie-info text-subtitle2">
+                {{ movie.releaseYear }} &bullet; {{ movie.duration }} min
+            </div>
+            <div class="movie-description text-body1 q-my-md">
+                {{ movie.description }}
+            </div>
+            <div class="movie-director text-body2 q-my-sm">
                 <strong>Director:</strong> {{ movie.director }}
             </div>
-            <div class="q-my-sm">
+            <div class="movie-cast text-body2 q-my-sm">
                 <strong>Cast:</strong> {{ movie.cast.join(', ') }}
             </div>
-            <RatingControl :movieId="movie.id" :initialRating="movie.userRating || 0" />
+            <RatingControl class="rating-control q-mt-md" :movieId="movie.id" :initialRating="movie.userRating || 0" />
         </div>
-        <div v-else>
+        <div v-else class="no-movie-found">
             <q-banner class="bg-grey-3 text-grey-8">
                 Movie not found.
             </q-banner>
@@ -33,4 +37,59 @@ const movieStore = useMovieStore();
 const movieId = Number(route.params.id);
 
 const movie = computed(() => movieStore.movies.find(m => m.id === movieId));
+
+const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
 </script>
+
+<style scoped>
+.movie-details-page {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.movie-details-container {
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+}
+
+.movie-image {
+    border-radius: 8px;
+}
+
+.movie-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.movie-info {
+    color: #555;
+}
+
+.movie-description {
+    color: #666;
+    line-height: 1.6;
+}
+
+.movie-director,
+.movie-cast {
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.rating-control {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.no-movie-found {
+    text-align: center;
+    margin-top: 40px;
+}
+</style>
