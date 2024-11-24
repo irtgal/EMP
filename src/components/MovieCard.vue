@@ -4,17 +4,11 @@
 
         <q-card-section class="movie-info">
             <div class="movie-title text-h6">{{ movie.title }}</div>
-            <div class="movie-details text-subtitle2">
-                {{ movie.releaseYear }} &bullet; {{ movie.duration }} min
-            </div>
-            <div class="movie-description text-body2">
-                {{ movie.description }}
+            <div class="movie-footer">
+                <span class="movie-year">{{ movie.releaseYear }}</span>
+                <RatingControl :movieId="movie.id" :initialRating="movie.userRating || 0" />
             </div>
         </q-card-section>
-
-        <q-card-actions align="right">
-            <RatingControl :movieId="movie.id" :initialRating="movie.userRating || 0" />
-        </q-card-actions>
     </q-card>
 </template>
 
@@ -30,44 +24,48 @@ const router = useRouter();
 const goToDetails = () => {
     router.push({ name: 'MovieDetails', params: { id: props.movie.id.toString() } });
 };
-
 </script>
+
 <style scoped>
 .movie-card {
     width: 100%;
-    max-width: 300px;
-    border-radius: 12px;
+    max-width: 200px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .movie-card:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .movie-image {
-    height: 200px;
+    height: 100px;
     object-fit: cover;
 }
 
 .movie-info {
-    padding: 16px;
+    padding: 8px;
 }
 
 .movie-title {
     font-weight: bold;
-    margin-bottom: 8px;
+    font-size: 14px;
+    margin-bottom: 4px;
 }
 
-.movie-details {
+.movie-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: align-end;
+    font-size: 12px;
     color: #666;
-    margin-bottom: 8px;
 }
 
-.q-card-actions {
-    padding: 8px 16px;
-    border-top: 1px solid #eee;
+.movie-year {
+    font-size: 12px;
+    color: #666;
 }
 </style>

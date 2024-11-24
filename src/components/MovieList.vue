@@ -35,7 +35,7 @@ const props = defineProps<{
 
 @media (max-width: 768px) {
     .movie-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
 </style>
