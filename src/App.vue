@@ -6,4 +6,6 @@
 defineOptions({
   name: 'App'
 });
+
+console.log('App component loaded');
 </script>
