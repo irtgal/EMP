@@ -118,5 +118,65 @@
       "imageUrl": "https://www.themoviedb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
       "duration": 169,
       "rating": 8.6
+    },
+    {
+      "id": 11,
+      "title": "Mad Max: Fury Road",
+      "description": "In a post-apocalyptic wasteland, Max teams up with Furiosa to flee from a tyrant.",
+      "releaseYear": 2015,
+      "genres": ["Action", "Adventure", "Sci-Fi"],
+      "director": "George Miller",
+      "cast": ["Tom Hardy", "Charlize Theron"],
+      "imageUrl": "https://www.themoviedb.org/t/p/original/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg",
+      "duration": 120,
+      "rating": 8.1
+    },
+    {
+      "id": 12,
+      "title": "The Social Network",
+      "description": "The story of the founding of Facebook and the lawsuits that followed.",
+      "releaseYear": 2010,
+      "genres": ["Biography", "Drama"],
+      "director": "David Fincher",
+      "cast": ["Jesse Eisenberg", "Andrew Garfield"],
+      "imageUrl": "https://m.media-amazon.com/images/S/pv-target-images/6c785b9877ce0e340988162f70377cc17cd3b95a5536b00cfa524d1a88f83f3b.jpg",
+      "duration": 120,
+      "rating": 7.7
+    },
+    {
+      "id": 13,
+      "title": "La La Land",
+      "description": "A jazz musician and an aspiring actress navigate their careers in Los Angeles.",
+      "releaseYear": 2016,
+      "genres": ["Comedy", "Drama", "Music"],
+      "director": "Damien Chazelle",
+      "cast": ["Ryan Gosling", "Emma Stone"],
+      "imageUrl": "https://www.themoviedb.org/t/p/original/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
+      "duration": 128,
+      "rating": 8.0
+    },
+    {
+      "id": 14,
+      "title": "Get Out",
+      "description": "A young African-American visits his white girlfriend's mysterious family.",
+      "releaseYear": 2017,
+      "genres": ["Horror", "Mystery", "Thriller"],
+      "director": "Jordan Peele",
+      "cast": ["Daniel Kaluuya", "Allison Williams"],
+      "imageUrl": "https://m.media-amazon.com/images/M/MV5BMjUxMDQwNjcyNl5BMl5BanBnXkFtZTgwNzcwMzc0MTI@._V1_.jpg",
+      "duration": 104,
+      "rating": 7.7
+    },
+    {
+      "id": 15,
+      "title": "The Grand Budapest Hotel",
+      "description": "The adventures of a legendary concierge and his trusted lobby boy.",
+      "releaseYear": 2014,
+      "genres": ["Adventure", "Comedy", "Crime"],
+      "director": "Wes Anderson",
+      "cast": ["Ralph Fiennes", "F. Murray Abraham"],
+      "imageUrl": "https://budapest-travel-tips.com/wp-content/uploads/2019/05/Grand_Budapest_Hotel_film.jpg",
+      "duration": 99,
+      "rating": 8.1
     }
   ]
