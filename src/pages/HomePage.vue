@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <div>Home</div>
+        <div class="text-center text-h6">HOME - TODO</div>
     </q-page>
 </template>
 

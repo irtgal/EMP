@@ -5,8 +5,8 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('../layouts/MainLayout.vue'),
     children: [
-      // { path: '', component: () => import('../pages/HomePage.vue') },
-      { path: '', component: () => import('../pages/SearchPage.vue') },
+      { path: '', name: 'Home', component: () => import('../pages/HomePage.vue') },
+      { path: 'search', name: 'SearchMovie', component: () => import('../pages/SearchPage.vue') },
       { path: 'movie/:id', name: 'MovieDetails', component: () => import('../pages/MovieDetailsPage.vue'), props: true },
     ],
   },
