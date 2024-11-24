@@ -59,6 +59,7 @@ export const useMovieStore = defineStore('movieStore', () => {
     movies,
     filteredMovies,
     setFilterCriteria,
+    filterCriteria,
     rateMovie,
   };
 });

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useMovieStore } from '../store/movieStore';
 
 const movieStore = useMovieStore();
@@ -19,6 +19,13 @@ const movieStore = useMovieStore();
 const searchQuery = ref('');
 const selectedGenres = ref<string[]>([]);
 const selectedYear = ref<number | null>(null);
+
+onMounted(() => {
+    const criteria = movieStore.filterCriteria;
+    searchQuery.value = criteria.searchQuery || '';
+    selectedGenres.value = criteria.genres || [];
+    selectedYear.value = criteria.releaseYear || null;
+});
 
 const genreOptions = computed(() => {
     const genres = new Set<string>();
