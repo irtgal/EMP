@@ -1,23 +1,22 @@
 <template>
-    <div class="movie-list">
-        <div v-if="movies.length === 0">No movies found.</div>
-        <div v-else class="movie-grid">
-            <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" />
+    <div v-if="props.movies.length" class="movie-list">
+        <div class="movie-grid">
+            <MovieCard v-for="movie in props.movies" :key="movie.id" :movie="movie" />
         </div>
-        <div class="text-center" v-if="movies.length > 0">
-            {{ movies.length }} items
+        <div class="text-center">
+            {{ props.movies.length }} items
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useMovieStore } from '../store/movieStore';
+import { defineProps } from 'vue';
+import { Movie } from '../models';
 import MovieCard from './MovieCard.vue';
 
-const movieStore = useMovieStore();
-
-const movies = computed(() => movieStore.filteredMovies);
+const props = defineProps<{
+    movies: Movie[];
+}>();
 </script>
 
 <style scoped>
@@ -34,5 +33,9 @@ const movies = computed(() => movieStore.filteredMovies);
     padding: 16px;
 }
 
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
 </style>
