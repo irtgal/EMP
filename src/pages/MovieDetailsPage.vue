@@ -15,7 +15,9 @@
             <div class="movie-cast text-body2 q-my-sm">
                 <strong>Cast:</strong> {{ movie.cast.join(', ') }}
             </div>
-            <RatingControl class="rating-control q-mt-md" :movieId="movie.id" :initialRating="movie.userRating || 0" />
+            <div class="rating-wrapper">
+                <RatingControl class="rating-control" :movieId="movie.id" :initialRating="movie.userRating || 0" />
+            </div>
         </div>
         <div v-else class="no-movie-found">
             <q-banner class="bg-grey-3 text-grey-8">
@@ -82,9 +84,18 @@ const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
     color: #444;
 }
 
-.rating-control {
+.rating-wrapper {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.rating-control {
+    font-size: 2rem;
+    line-height: 1;
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
 }
 
