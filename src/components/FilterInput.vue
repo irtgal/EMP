@@ -1,12 +1,12 @@
 <template>
     <div class="filter-input q-pa-md">
-        <q-input v-model="searchQuery" label="Search" @input="applyFilters" />
+        <q-input v-model="searchQuery" label="Search" @input="applyFilters" clearable />
 
         <q-select v-model="selectedGenres" :options="genreOptions" label="Genres" multiple emit-value map-options
-            @update:model-value="applyFilters" />
+            @update:model-value="applyFilters" clearable />
 
         <q-select v-model="selectedYear" :options="yearOptions" label="Release Year" emit-value map-options
-            @update:model-value="applyFilters" />
+            @update:model-value="applyFilters" clearable />
     </div>
 </template>
 
