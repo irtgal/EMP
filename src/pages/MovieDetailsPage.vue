@@ -1,7 +1,7 @@
 <template>
     <q-page class="movie-details-page">
         <div v-if="movie" class="movie-details-container">
-            <q-img :src="movie.imageUrl || BACKUP_IMAGE_URL" :alt="movie.title" class="movie-image" />
+            <q-img :src="movie.imageUrl || BACKUP_IMAGE_URL" :alt="movie.title" class="movie-image" fit="contain" />
             <div class="movie-title text-h4 q-mt-md">{{ movie.title }}</div>
             <div class="movie-info text-subtitle2">
                 {{ movie.releaseYear }} &bullet; {{ movie.duration }} min
@@ -62,6 +62,7 @@ const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
 
 .movie-image {
     border-radius: 8px;
+    max-height: 400px;
 }
 
 .movie-title {
