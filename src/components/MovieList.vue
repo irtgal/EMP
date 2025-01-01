@@ -1,8 +1,14 @@
 <template>
     <div v-if="props.movies.length" class="movie-list">
-        <div class="movie-grid">
+
+        <div v-if="layout === 'grid'" class="movie-grid">
             <MovieCard v-for="movie in props.movies" :key="movie.id" :movie="movie" />
         </div>
+        <div v-else-if="layout === 'row'" class="movie-row">
+            <MovieCard :movie="movie" v-for="movie in props.movies" :key="movie.id" />
+        </div>
+
+        <!-- Item Count -->
         <div class="text-center">
             {{ props.movies.length }} items
         </div>
@@ -16,6 +22,7 @@ import MovieCard from './MovieCard.vue';
 
 const props = defineProps<{
     movies: Movie[];
+    layout: 'grid' | 'row';
 }>();
 </script>
 
@@ -32,6 +39,20 @@ const props = defineProps<{
     gap: 16px;
     padding: 16px;
 }
+
+.movie-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 16px;
+    align-items: stretch;
+
+    .movie-card {
+        flex-shrink: 0;
+        width: 200px;
+    }
+}
+
 
 @media (max-width: 768px) {
     .movie-grid {
