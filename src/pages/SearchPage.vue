@@ -10,7 +10,7 @@
         </div>
 
         <!-- Movie List -->
-        <MovieList v-else :movies="movies" />
+        <MovieList v-else :movies="movies" layout="grid" />
     </q-page>
 </template>
 
