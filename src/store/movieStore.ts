@@ -1,41 +1,16 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { Movie, FilterCriteria, UserRating } from '../models';
-import moviesData from '../data/movies.json';
+import { Movie, FilterCriteria, UserRating } from '../models/Movie';
 
 export const useMovieStore = defineStore('movieStore', () => {
-  const movies = ref<Movie[]>(moviesData);
+  // state
+  const movies = ref<Movie[]>([]);
+  const currentPage = ref(1);
   const filterCriteria = ref<FilterCriteria>({});
   const userRatings = ref<UserRating[]>([]);
 
-  const filteredMovies = computed(() => {
-    return movies.value.filter(movie => {
-      // Filter by genres
-      if (filterCriteria.value.genres?.length) {
-        if (!filterCriteria.value.genres.some(genre => movie.genres.includes(genre))) {
-          return false;
-        }
-      }
 
-      // Filter by release year
-      if (filterCriteria.value.releaseYear) {
-        if (movie.releaseYear !== filterCriteria.value.releaseYear) {
-          return false;
-        }
-      }
-
-      // Filter by search query
-      if (filterCriteria.value.searchQuery) {
-        const query = filterCriteria.value.searchQuery.toLowerCase();
-        if (!movie.title.toLowerCase().includes(query)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  });
-
+  // Actions
   const setFilterCriteria = (criteria: FilterCriteria) => {
     filterCriteria.value = criteria;
   };
@@ -47,19 +22,26 @@ export const useMovieStore = defineStore('movieStore', () => {
     } else {
       userRatings.value.push({ movieId, rating });
     }
-
-    // Update the movie's userRating
-    const movie = movies.value.find(m => m.id === movieId);
-    if (movie) {
-      movie.userRating = rating;
-    }
   };
 
+  // Getters
+  const getMovieRating = computed(() => (movieId: number): number | null => {
+    const rating = userRatings.value.find(r => r.movieId === movieId);
+    return rating ? rating.rating : null;
+  });
+
   return {
+    // State
     movies,
-    filteredMovies,
-    setFilterCriteria,
+    currentPage,
     filterCriteria,
+    userRatings,
+
+    // Actions
+    setFilterCriteria,
     rateMovie,
+
+    // Getters
+    getMovieRating,
   };
 });

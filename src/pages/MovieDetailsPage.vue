@@ -4,16 +4,16 @@
             <q-img :src="movie.imageUrl || BACKUP_IMAGE_URL" :alt="movie.title" class="movie-image" fit="contain" />
             <div class="movie-title text-h4 q-mt-md">{{ movie.title }}</div>
             <div class="movie-info text-subtitle2">
-                {{ movie.releaseYear }} &bullet; {{ movie.duration }} min
+                {{ movie.releaseYear }} &bullet; {{ movie.runtime }} min
             </div>
             <div class="movie-description text-body1 q-my-md">
                 {{ movie.description }}
             </div>
             <div class="movie-director text-body2 q-my-sm">
-                <strong>Director:</strong> {{ movie.director }}
+                <!-- <strong>Director:</strong> {{ movie.director }} -->
             </div>
             <div class="movie-cast text-body2 q-my-sm">
-                <strong>Cast:</strong> {{ movie.cast.join(', ') }}
+                <!-- <strong>Cast:</strong> {{ movie.cast.join(', ') }} -->
             </div>
             <div class="rating-wrapper">
                 <RatingControl class="rating-control" :movieId="movie.id" :initialRating="movie.userRating || 0" />

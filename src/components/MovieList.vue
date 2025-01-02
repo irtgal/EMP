@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue';
-import { Movie } from '../models';
+import { Movie } from '../models/Movie';
 import MovieCard from './MovieCard.vue';
 
 const props = defineProps<{
