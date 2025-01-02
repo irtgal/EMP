@@ -70,7 +70,6 @@ const debouncedFetchMovies = debounce(fetchMovies, 500);
 
 watch(searchQuery, () => {
     currentPage.value = 1;
-    console.log("CHANGEDD");
     debouncedFetchMovies();
 });
 </script>
