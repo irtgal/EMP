@@ -7,11 +7,6 @@
         <div v-else-if="layout === 'row'" class="movie-row">
             <MovieCard :movie="movie" v-for="movie in props.movies" :key="movie.id" />
         </div>
-
-        <!-- Item Count -->
-        <div class="text-center">
-            {{ props.movies.length }} items
-        </div>
     </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
     <q-page padding>
         <!-- Search Input -->
-        <q-input v-model="searchQuery" label="Search" clearable @input="fetchMovies" />
+        <q-input v-model="searchQuery" label="Search" clearable />
 
         <!-- No Movies Found Message -->
         <div v-if="!isLoading && movies.length === 0" class="no-movies">
@@ -33,6 +33,8 @@
 import { onMounted, ref, watch } from 'vue';
 import { searchMovies, fetchPopularMovies } from 'src/api/movieService';
 import MovieList from '../components/MovieList.vue';
+import { debounce } from 'lodash';
+
 
 const movies = ref([]);
 const currentPage = ref(1);
@@ -63,10 +65,13 @@ const fetchMovies = async () => {
         isLoading.value = false;
     }
 };
+const debouncedFetchMovies = debounce(fetchMovies, 500);
+
 
 watch(searchQuery, () => {
     currentPage.value = 1;
-    fetchMovies();
+    console.log("CHANGEDD");
+    debouncedFetchMovies();
 });
 </script>
 
