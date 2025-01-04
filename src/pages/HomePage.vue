@@ -1,18 +1,18 @@
 <template>
     <q-page padding>
-        <!-- Section: New Movies -->
-        <section v-if="newMovies.length" class="q-mb-xl">
-            <h1 class="text-h5 q-mb-md">New Movies</h1>
-            <MovieList :movies="newMovies" layout="row" />
+        <!-- Section: Upcoming Movies -->
+        <section v-if="upcomingMovies.length" class="q-mb-xl">
+            <h1 class="text-h5 q-mb-md">Upcoming Movies</h1>
+            <MovieList :movies="upcomingMovies" layout="row" />
         </section>
 
-        <!-- Section: Recommended Movies -->
-        <section v-if="recommendedMovies.length" class="q-mb-xl">
-            <h1 class="text-h5 q-mb-md">Recommended Movies</h1>
-            <MovieList :movies="recommendedMovies" layout="row" />
+        <!-- Section: Popular Movies -->
+        <section v-if="popularMovies.length" class="q-mb-xl">
+            <h1 class="text-h5 q-mb-md">Popular Movies</h1>
+            <MovieList :movies="popularMovies" layout="row" />
         </section>
 
-        <!-- Section: Rated Movies -->
+        <!-- Section: Rated Movies (from store) -->
         <section v-if="ratedMovies.length" class="q-mb-xl">
             <h1 class="text-h5 q-mb-md">Rated Movies</h1>
             <MovieList :movies="ratedMovies" layout="row" />
@@ -21,34 +21,50 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useMovieStore } from '../store/movieStore';
 import MovieList from 'src/components/MovieList.vue';
+import { fetchPopularMovies, fetchUpcomingMovies } from 'src/api/movieService';
+import type { Movie } from 'src/models/Movie';
 
-const movieStore = useMovieStore();
+// Access rated movies from the store
+const { ratedMovies } = storeToRefs(useMovieStore());
 
-const newMovies = computed(() =>
-    movieStore.movies.filter((movie) => {
-        const currentYear = new Date().getFullYear();
-        return movie.releaseYear >= currentYear - 1; // Movies from the last year
-    })
-);
+// Local state for popular/upcoming movies
+const popularMovies = ref<Movie[]>([]);
+const upcomingMovies = ref<Movie[]>([]);
+const isLoading = ref(false);
 
-const recommendedMovies = computed(() =>
-    movieStore.movies
-);
 
-const ratedMovies = computed(() =>
-    movieStore.movies.filter((movie) => movie.userRating != undefined)
-);
+// Fetch popular movies
+async function loadPopularMovies() {
+    isLoading.value = true;
+    try {
+        const data = await fetchPopularMovies();
+        popularMovies.value = data.results;
+    } catch (error) {
+        console.error('Error fetching popular movies:', error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+// Fetch upcoming movies
+async function loadUpcomingMovies() {
+    isLoading.value = true;
+    try {
+        const data = await fetchUpcomingMovies();
+        upcomingMovies.value = data.results;
+    } catch (error) {
+        console.error('Error fetching upcoming movies:', error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+onMounted(() => {
+    loadPopularMovies();
+    loadUpcomingMovies();
+});
 </script>
-
-<style scoped>
-section {
-    margin-bottom: 32px;
-}
-
-h2 {
-    margin-bottom: 16px;
-}
-</style>

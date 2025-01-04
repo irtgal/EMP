@@ -6,7 +6,7 @@
             <div class="movie-title">{{ movie.title }}</div>
             <div class="movie-footer">
                 <span class="movie-year">{{ movie.releaseYear }}</span>
-                <RatingControl :movieId="movie.id" :initialRating="movie.userRating || 0" />
+                <RatingControl :movie="movie" :initialRating="movie.userRating || 0" />
             </div>
         </q-card-section>
     </q-card>

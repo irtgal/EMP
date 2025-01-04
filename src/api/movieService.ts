@@ -17,9 +17,15 @@ const tmdbApi = axios.create({
 
 
 export const fetchPopularMovies = async (page = 1) => {
-  const response = await tmdbApi.get('/movie/popular', { params: { page } });
+  const response = await tmdbApi.get('/movie/popular', { params: { page: page } });
   return transformMoviesResponse(response.data);
 };
+
+export const fetchUpcomingMovies = async (page = 1) => {
+  const response = await tmdbApi.get('/movie/upcoming', { params: { page } });
+  return transformMoviesResponse(response.data);
+};
+
 
 export const searchMovies = async (query: string, page = 1) => {
   const response = await tmdbApi.get('/search/movie', {

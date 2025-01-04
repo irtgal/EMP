@@ -1,30 +1,33 @@
+
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { Movie, FilterCriteria, UserRating } from '../models/Movie';
+import { Movie, UserRating } from '../models/Movie';
 
 export const useMovieStore = defineStore('movieStore', () => {
-  // state
-  const movies = ref<Movie[]>([]);
-  const currentPage = ref(1);
-  const filterCriteria = ref<FilterCriteria>({});
+  // ---------------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------------
   const userRatings = ref<UserRating[]>([]);
+  const ratedMovies = ref<Movie[]>([]); 
 
-
+  // ---------------------------------------------------------------------------
   // Actions
-  const setFilterCriteria = (criteria: FilterCriteria) => {
-    filterCriteria.value = criteria;
-  };
-
-  const rateMovie = (movieId: number, rating: number) => {
+  // ---------------------------------------------------------------------------
+  const rateMovie = (movie: Movie, rating: number) => {
+    const movieId = movie.id;
     const existingRating = userRatings.value.find(r => r.movieId === movieId);
+
     if (existingRating) {
       existingRating.rating = rating;
     } else {
       userRatings.value.push({ movieId, rating });
+      ratedMovies.value.push(movie);
     }
   };
 
+  // ---------------------------------------------------------------------------
   // Getters
+  // ---------------------------------------------------------------------------
   const getMovieRating = computed(() => (movieId: number): number | null => {
     const rating = userRatings.value.find(r => r.movieId === movieId);
     return rating ? rating.rating : null;
@@ -32,13 +35,10 @@ export const useMovieStore = defineStore('movieStore', () => {
 
   return {
     // State
-    movies,
-    currentPage,
-    filterCriteria,
     userRatings,
+    ratedMovies,
 
     // Actions
-    setFilterCriteria,
     rateMovie,
 
     // Getters

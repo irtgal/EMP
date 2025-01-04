@@ -9,7 +9,8 @@
           Movie
         </q-toolbar-title>
 
-        <q-btn v-if="!isSearchPage" flat dense round icon="search" aria-label="Search" @click="goToSearch" />
+        <q-btn flat dense round icon="search" aria-label="Search" @click="goToSearch"
+          :style="{ visibility: !isSearchPage ? 'visible' : 'hidden' }" />
 
       </q-toolbar>
     </q-header>

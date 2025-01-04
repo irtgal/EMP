@@ -16,7 +16,7 @@
                 <!-- <strong>Cast:</strong> {{ movie.cast.join(', ') }} -->
             </div>
             <div class="rating-wrapper">
-                <RatingControl class="rating-control" :movieId="movie.id" :initialRating="movie.userRating || 0" />
+                <RatingControl class="rating-control" :movie="movie" :initialRating="movie.userRating || 0" />
             </div>
         </div>
         <div v-else class="no-movie-found">
@@ -28,17 +28,20 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useMovieStore } from '../store/movieStore';
 import RatingControl from '../components/RatingControl.vue';
+import { fetchMovieDetails } from '../api/movieService';
+import { Movie } from '../models/Movie';
 
 const route = useRoute();
-const movieStore = useMovieStore();
-
 const movieId = Number(route.params.id);
 
-const movie = computed(() => movieStore.movies.find(m => m.id === movieId));
+const movie = ref<Movie | null>(null);
+
+onMounted(async () => {
+    movie.value = await fetchMovieDetails(movieId);
+});
 
 const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
 </script>
