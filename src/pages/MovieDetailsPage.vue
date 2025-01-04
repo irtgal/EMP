@@ -19,7 +19,7 @@
                 <RatingControl class="rating-control" :movie="movie" :initialRating="movie.userRating || 0" />
             </div>
 
-            <template v-if="movie.recommendedMovies">
+            <template v-if="movie.recommendedMovies && movie.recommendedMovies.length">
                 <div class="text-h6 text-weight-bold q-mt-md q-mb-sm">
                     Recommended Movies
                 </div>
