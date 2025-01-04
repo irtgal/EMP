@@ -43,3 +43,8 @@ export const fetchGenres = async (): Promise<Genre[]> => {
   const response = await tmdbApi.get('/genre/movie/list');
   return response.data.genres;
 };
+
+export const fetchRecommendedMovies = async (movieId: number) => {
+  const response = await tmdbApi.get(`/movie/${movieId}/recommendations`);
+  return transformMoviesResponse(response.data);
+};

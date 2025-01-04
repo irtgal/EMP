@@ -18,6 +18,13 @@
             <div class="rating-wrapper">
                 <RatingControl class="rating-control" :movie="movie" :initialRating="movie.userRating || 0" />
             </div>
+
+            <template v-if="movie.recommendedMovies">
+                <div class="text-h6 text-weight-bold q-mt-md q-mb-sm">
+                    Recommended Movies
+                </div>
+                <movie-list :movies="movie.recommendedMovies" layout="row" />
+            </template>
         </div>
         <div v-else class="no-movie-found">
             <q-banner class="bg-grey-3 text-grey-8">
@@ -28,11 +35,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import RatingControl from '../components/RatingControl.vue';
-import { fetchMovieDetails } from '../api/movieService';
 import { Movie } from '../models/Movie';
+import { useMovieStore } from 'src/store/movieStore';
+import MovieList from '../components/MovieList.vue';
+
+const movieStore = useMovieStore();
 
 const route = useRoute();
 const movieId = Number(route.params.id);
@@ -40,7 +50,11 @@ const movieId = Number(route.params.id);
 const movie = ref<Movie | null>(null);
 
 onMounted(async () => {
-    movie.value = await fetchMovieDetails(movieId);
+    movie.value = await movieStore.fetchAndCacheMovieDetails(movieId);
+});
+
+watch(() => route.params.id, async (id) => {
+    movie.value = await movieStore.fetchAndCacheMovieDetails(Number(id));
 });
 
 const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';

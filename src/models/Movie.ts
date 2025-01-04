@@ -1,4 +1,5 @@
 import { useMovieStore } from '../store/movieStore';
+import { fetchRecommendedMovies } from '../api/movieService';
 
 export interface IMovie {
   id: number;
@@ -15,6 +16,7 @@ export interface IMovie {
     cast: { name: string }[];
   };
   userRating?: number;
+  recommendedMovies?: IMovie[];
 }
 
 export interface FilterCriteria {
@@ -53,6 +55,7 @@ export class Movie implements IMovie {
     crew: { name: string; job: string }[];
     cast: { name: string }[];
   };
+  recommendedMovies?: Movie[];
 
   constructor(data: IMovie) {
     Object.assign(this, data);
@@ -83,6 +86,18 @@ export class Movie implements IMovie {
     const movieStore = useMovieStore();
     return movieStore.getMovieRating(this.id) || undefined;
 
+  }
+
+  // Functions
+
+  public async fetchRecommendations(): Promise<void> {
+    if (this.recommendedMovies) return;
+    try {
+      const recommended = await fetchRecommendedMovies(this.id);
+      this.recommendedMovies = recommended;
+    } catch (error) {
+      console.error('Error fetching recommended movies:', error);
+    }
   }
 
 
