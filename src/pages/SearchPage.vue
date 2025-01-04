@@ -35,39 +35,49 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
-import { storeToRefs } from 'pinia';
-import { useMovieStore } from '../store/movieStore';
 import MovieList from '../components/MovieList.vue';
+import { searchMovies } from 'src/api/movieService';
 
-const movieStore = useMovieStore();
 
-const {
-    movies,
-    searchQuery,
-    currentPage,
-    totalPages,
-    isLoading,
-} = storeToRefs(movieStore);
+const searchQuery = ref('');
+const currentPage = ref(1);
+const totalPages = ref(1);
+const isLoading = ref(false);
+const movies = ref([]);
 
 const debouncedGetSearchMovies = debounce(() => {
-    movieStore.getSearchMovies();
+    onSearchMovies();
 }, 500);
 
 watch(searchQuery, () => {
-    movieStore.resetPagination();
+    currentPage.value = 1;
     debouncedGetSearchMovies();
 });
 
+const onSearchMovies = async () => {
+    isLoading.value = true;
+    try {
+        const data = await searchMovies(searchQuery.value, currentPage.value);
+        movies.value = data.results;
+        totalPages.value = data.total_pages;
+    } catch (error) {
+        console.error('Error searching movies:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+
 onMounted(() => {
     if (!!searchQuery.value)
-        movieStore.getSearchMovies();
+        onSearchMovies();
 });
 
 function handlePageChange(page: number) {
     currentPage.value = page;
-    movieStore.getSearchMovies();
+    onSearchMovies();
 }
 </script>
 
