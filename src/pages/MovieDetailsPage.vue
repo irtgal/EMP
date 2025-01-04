@@ -63,13 +63,16 @@ const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
 <style scoped>
 .movie-details-page {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     background-color: #f9f9f9;
 }
 
 .movie-details-container {
+    width: 100%;
     max-width: 600px;
+    margin: 0 auto;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
