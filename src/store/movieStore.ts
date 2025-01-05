@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { Movie, UserRating } from '../models/Movie';
+import { ref, computed, watch } from 'vue';
+import { IMovie, Movie, UserRating } from '../models/Movie';
 import { fetchMovieDetails, fetchRecommendedMovies } from '../api/movieService';
+import { LocalStorage } from 'quasar';
 
 export const useMovieStore = defineStore('movieStore', () => {
   // ---------------------------------------------------------------------------
@@ -16,8 +17,11 @@ export const useMovieStore = defineStore('movieStore', () => {
   // ---------------------------------------------------------------------------
   const rateMovie = (movie: Movie, rating: number) => {
     const movieId = movie.id;
+    if (rating < 1) {
+      unRateMovie(movieId);
+      return;
+    }
     const existingRating = userRatings.value.find(r => r.movieId === movieId);
-
     if (existingRating) {
       existingRating.rating = rating;
     } else {
@@ -25,6 +29,18 @@ export const useMovieStore = defineStore('movieStore', () => {
       ratedMovies.value.push(movie);
     }
   };
+
+  const unRateMovie = (movieId: number) => {
+    const ratingIndex = userRatings.value.findIndex(r => r.movieId === movieId);
+    if (ratingIndex > -1) {
+      userRatings.value.splice(ratingIndex, 1);
+    }
+
+    const movieIndex = ratedMovies.value.findIndex(m => m.id === movieId);
+    if (movieIndex > -1) {
+      ratedMovies.value.splice(movieIndex, 1);
+    }
+  }
 
   const fetchAndCacheMovieDetails = async (movieId: number): Promise<Movie> => {
     const existingIndex = cachedMovies.value.findIndex(m => m.id === movieId);
@@ -52,6 +68,31 @@ export const useMovieStore = defineStore('movieStore', () => {
     const rating = userRatings.value.find(r => r.movieId === movieId);
     return rating ? rating.rating : null;
   });
+
+
+  // Persistance
+    function loadStateFromStorage() {
+      const savedRatedMovies = LocalStorage.getItem('ratedMovies') as IMovie[];
+      const savedUserRatings = LocalStorage.getItem('userRatings') as UserRating[];
+      if (savedRatedMovies) {
+        ratedMovies.value = savedRatedMovies.map(data => new Movie(data));
+      }
+      if (savedUserRatings) {
+        userRatings.value = savedUserRatings;
+      }
+    }
+  
+    function saveStateToStorage() {
+      LocalStorage.set('ratedMovies', ratedMovies.value);
+      LocalStorage.set('userRatings', userRatings.value);
+    }
+  
+    // Watchers to Automatically Persist State
+    watch(ratedMovies, saveStateToStorage, { deep: true });
+    watch(userRatings, saveStateToStorage, { deep: true });
+  
+    // Initialize Store
+    loadStateFromStorage();
 
   return {
     // State
