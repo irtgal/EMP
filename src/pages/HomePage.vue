@@ -15,13 +15,13 @@
         <!-- Section: Rated Movies (from store) -->
         <section v-if="ratedMovies.length" class="q-mb-xl">
             <h1 class="text-h5 q-mb-md">Rated Movies</h1>
-            <MovieList :movies="ratedMovies" layout="row" />
+            <MovieList :movies="ratedMoviesReversed" layout="row" />
         </section>
     </q-page>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMovieStore } from '../store/movieStore';
 import MovieList from 'src/components/MovieList.vue';
@@ -35,6 +35,8 @@ const { ratedMovies } = storeToRefs(useMovieStore());
 const popularMovies = ref<Movie[]>([]);
 const upcomingMovies = ref<Movie[]>([]);
 const isLoading = ref(false);
+
+const ratedMoviesReversed = computed(() => ratedMovies.value.slice().reverse());
 
 
 // Fetch popular movies
