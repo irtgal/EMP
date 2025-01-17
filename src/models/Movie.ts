@@ -19,12 +19,6 @@ export interface IMovie {
   recommendedMovies?: IMovie[];
 }
 
-export interface FilterCriteria {
-  genres?: string[];
-  releaseYear?: number;
-  searchQuery?: string;
-}
-
 export interface UserRating {
   movieId: number;
   rating: number;
