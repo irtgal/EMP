@@ -31,7 +31,7 @@ import { Movie } from '../models/Movie';
   
   
   export function recommendMovies(ratedMovies: Movie[]): Movie[] {
-    console.log("Calculating recommendations...");
+    console.log('Calculating recommendations...');
     
     const genrePreference = computeGenrePreference(ratedMovies);
     const ratedMovieIds = makeRatedMovieSet(ratedMovies);
