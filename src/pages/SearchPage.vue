@@ -39,10 +39,10 @@ import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
 import MovieList from '../components/MovieList.vue';
 import { searchMovies } from 'src/api/movieService';
+import { SessionStorage } from 'quasar';
 
-
-const searchQuery = ref('');
-const currentPage = ref(1);
+const searchQuery = ref<string>(SessionStorage.getItem('searchQuery') as string || '');
+const currentPage = ref<number>(Number(SessionStorage.getItem('currentPage')) || 1);
 const totalPages = ref(1);
 const isLoading = ref(false);
 const movies = ref([]);
@@ -51,15 +51,20 @@ const debouncedGetSearchMovies = debounce(() => {
     onSearchMovies();
 }, 500);
 
-watch(searchQuery, () => {
+watch(searchQuery, (newQuery) => {
     currentPage.value = 1;
+    SessionStorage.set('searchQuery', newQuery);
     debouncedGetSearchMovies();
+});
+
+watch(currentPage, (newPage) => {
+    SessionStorage.set('currentPage', newPage);
 });
 
 const onSearchMovies = async () => {
     isLoading.value = true;
     try {
-        const data = await searchMovies(searchQuery.value, currentPage.value);
+        const data = await searchMovies(searchQuery.value as string, currentPage.value);
         movies.value = data.results;
         totalPages.value = data.total_pages;
     } catch (error) {
@@ -69,10 +74,10 @@ const onSearchMovies = async () => {
     }
 };
 
-
 onMounted(() => {
-    if (!!searchQuery.value)
+    if (searchQuery.value) {
         onSearchMovies();
+    }
 });
 
 function handlePageChange(page: number) {
