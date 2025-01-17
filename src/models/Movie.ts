@@ -6,7 +6,6 @@ export interface IMovie {
   title: string;
   overview: string;
   release_date: string;
-  genre_ids: number[];
   poster_path: string | null;
   backdrop_path: string | null;
   vote_average: number;
@@ -15,6 +14,9 @@ export interface IMovie {
     crew: { name: string; job: string }[];
     cast: { name: string }[];
   };
+  genres?: Genre[]; // Fetched movies have genres, related movies have genre_ids -> specific to TMDb API
+  genre_ids?: number[];
+  genreIds: number[];
   userRating?: number;
   recommendedMovies?: IMovie[];
 }
@@ -39,12 +41,13 @@ export class Movie implements IMovie {
   title!: string;
   overview!: string;
   release_date!: string;
-  genre_ids!: number[];
   poster_path!: string | null;
   backdrop_path!: string | null;
   vote_average!: number;
   popularity?: number;
   runtime?: number;
+  genres!: Genre[];
+  genre_ids?: number[];
   credits?: {
     crew: { name: string; job: string }[];
     cast: { name: string }[];
@@ -80,6 +83,10 @@ export class Movie implements IMovie {
     const movieStore = useMovieStore();
     return movieStore.getMovieRating(this.id) || undefined;
 
+  }
+
+  get genreIds(): number[] {
+    return this.genre_ids || this.genres.map(g => g.id);
   }
 
   // Functions

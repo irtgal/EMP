@@ -1,5 +1,11 @@
 <template>
     <q-page padding>
+        <!-- Section recommended movies -->
+        <section v-if="recommendedMovies.length" class="q-mb-xl">
+            <h1 class="text-h5 q-mb-md">Recommended Movies</h1>
+            <MovieList :movies="recommendedMovies" layout="row" />
+        </section>
+
         <!-- Section: Upcoming Movies -->
         <section v-if="upcomingMovies.length" class="q-mb-xl">
             <h1 class="text-h5 q-mb-md">Upcoming Movies</h1>
@@ -29,7 +35,7 @@ import { fetchPopularMovies, fetchUpcomingMovies } from 'src/api/movieService';
 import type { Movie } from 'src/models/Movie';
 
 // Access rated movies from the store
-const { ratedMovies } = storeToRefs(useMovieStore());
+const { ratedMovies, recommendedMovies } = storeToRefs(useMovieStore());
 
 // Local state for popular/upcoming movies
 const popularMovies = ref<Movie[]>([]);

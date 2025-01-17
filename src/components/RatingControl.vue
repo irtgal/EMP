@@ -23,5 +23,4 @@ watch(
     }
 );
 
-console.log(props)
 </script>

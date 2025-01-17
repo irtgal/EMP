@@ -3,6 +3,8 @@ import { ref, computed, watch } from 'vue';
 import { IMovie, Movie, UserRating } from '../models/Movie';
 import { fetchMovieDetails, fetchRecommendedMovies } from '../api/movieService';
 import { LocalStorage } from 'quasar';
+import { recommendMovies } from '../utils/recommendations';
+import { rehydrateMovie } from '../utils/helpers';
 
 export const useMovieStore = defineStore('movieStore', () => {
   // ---------------------------------------------------------------------------
@@ -10,6 +12,7 @@ export const useMovieStore = defineStore('movieStore', () => {
   // ---------------------------------------------------------------------------
   const userRatings = ref<UserRating[]>([]);
   const ratedMovies = ref<Movie[]>([]);
+  const recommendedMovies = ref<Movie[]>([]);
   const cachedMovies = ref<Movie[]>([]);
 
   // ---------------------------------------------------------------------------
@@ -73,9 +76,14 @@ export const useMovieStore = defineStore('movieStore', () => {
   // Persistance
     function loadStateFromStorage() {
       const savedRatedMovies = LocalStorage.getItem('ratedMovies') as IMovie[];
+      const savedRecommendedMovies = LocalStorage.getItem('recommendedMovies') as IMovie[];
       const savedUserRatings = LocalStorage.getItem('userRatings') as UserRating[];
+      
       if (savedRatedMovies) {
-        ratedMovies.value = savedRatedMovies.map(data => new Movie(data));
+        ratedMovies.value = savedRatedMovies.map(data => rehydrateMovie(data));
+      }
+      if (savedRecommendedMovies) {
+        recommendedMovies.value = savedRecommendedMovies.map(data => rehydrateMovie(data));
       }
       if (savedUserRatings) {
         userRatings.value = savedUserRatings;
@@ -85,11 +93,14 @@ export const useMovieStore = defineStore('movieStore', () => {
     function saveStateToStorage() {
       LocalStorage.set('ratedMovies', ratedMovies.value);
       LocalStorage.set('userRatings', userRatings.value);
+      recommendedMovies.value = recommendMovies(ratedMovies.value);
+      LocalStorage.set('recommendedMovies', recommendedMovies.value);
     }
   
     // Watchers to Automatically Persist State
-    watch(ratedMovies, saveStateToStorage, { deep: true });
     watch(userRatings, saveStateToStorage, { deep: true });
+
+
   
     // Initialize Store
     loadStateFromStorage();
@@ -98,6 +109,7 @@ export const useMovieStore = defineStore('movieStore', () => {
     // State
     userRatings,
     ratedMovies,
+    recommendedMovies,
 
     // Actions
     rateMovie,
