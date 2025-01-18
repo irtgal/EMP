@@ -35,14 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, onBeforeUnmount, watch, ref } from 'vue';
 import { debounce } from 'lodash';
 import MovieList from '../components/MovieList.vue';
 import { searchMovies } from 'src/api/movieService';
 import { SessionStorage } from 'quasar';
 
-const searchQuery = ref<string>(SessionStorage.getItem('searchQuery') as string || '');
-const currentPage = ref<number>(Number(SessionStorage.getItem('currentPage')) || 1);
+const searchQuery = ref<string>('');
+const currentPage = ref<number>(1);
 const totalPages = ref(1);
 const isLoading = ref(false);
 const movies = ref([]);
@@ -56,10 +56,6 @@ watch(searchQuery, () => {
     debouncedGetSearchMovies();
 });
 
-watch(currentPage, () => {
-    storeSearchState();
-});
-
 const onSearchMovies = async () => {
     isLoading.value = true;
     try {
@@ -70,14 +66,20 @@ const onSearchMovies = async () => {
         console.error('Error searching movies:', error);
     } finally {
         isLoading.value = false;
-        storeSearchState();
     }
 };
 
 onMounted(() => {
+    searchQuery.value = SessionStorage.getItem('searchQuery') as string || '';
+    currentPage.value = Number(SessionStorage.getItem('currentPage')) || 1;
+
     if (searchQuery.value) {
         onSearchMovies();
     }
+});
+
+onBeforeUnmount(() => {
+    storeSearchState();
 });
 
 function handlePageChange(page: number) {
@@ -86,7 +88,7 @@ function handlePageChange(page: number) {
 }
 
 function storeSearchState() {
-    if (searchQuery.value.trim() === '') {
+    if (!searchQuery.value || searchQuery.value.trim() === '') {
         SessionStorage.remove('searchQuery');
         SessionStorage.remove('currentPage');
         return;
