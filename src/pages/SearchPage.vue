@@ -41,8 +41,8 @@ import MovieList from '../components/MovieList.vue';
 import { searchMovies } from 'src/api/movieService';
 import { SessionStorage } from 'quasar';
 
-const searchQuery = ref<string>('');
-const currentPage = ref<number>(1);
+const searchQuery = ref<string>(SessionStorage.getItem('searchQuery') as string || '');
+const currentPage = ref<number>(Number(SessionStorage.getItem('currentPage')) || 1);
 const totalPages = ref(1);
 const isLoading = ref(false);
 const movies = ref([]);
@@ -70,8 +70,6 @@ const onSearchMovies = async () => {
 };
 
 onMounted(() => {
-    searchQuery.value = SessionStorage.getItem('searchQuery') as string || '';
-    currentPage.value = Number(SessionStorage.getItem('currentPage')) || 1;
 
     if (searchQuery.value) {
         onSearchMovies();

@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 import { Movie } from '../models/Movie';
 import RatingControl from './RatingControl.vue';
 import { useRouter } from 'vue-router';
