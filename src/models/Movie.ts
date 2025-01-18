@@ -34,7 +34,7 @@ export interface Genre {
 const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/';
 const DEFAULT_POSTER_SIZE = 'w500'; // Standard size for larger images
 const DEFAULT_THUMBNAIL_SIZE = 'w185'; // Standard size for thumbnails
-const FALLBACK_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
+const FALLBACK_IMAGE_URL = 'https://fakeimg.pl/600x400?text=No+image+available';
 
 export class Movie implements IMovie {
   id!: number;
