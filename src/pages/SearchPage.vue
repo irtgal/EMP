@@ -51,14 +51,13 @@ const debouncedGetSearchMovies = debounce(() => {
     onSearchMovies();
 }, 500);
 
-watch(searchQuery, (newQuery) => {
+watch(searchQuery, () => {
     currentPage.value = 1;
-    SessionStorage.set('searchQuery', newQuery);
     debouncedGetSearchMovies();
 });
 
-watch(currentPage, (newPage) => {
-    SessionStorage.set('currentPage', newPage);
+watch(currentPage, () => {
+    storeSearchState();
 });
 
 const onSearchMovies = async () => {
@@ -71,6 +70,7 @@ const onSearchMovies = async () => {
         console.error('Error searching movies:', error);
     } finally {
         isLoading.value = false;
+        storeSearchState();
     }
 };
 
@@ -83,6 +83,16 @@ onMounted(() => {
 function handlePageChange(page: number) {
     currentPage.value = page;
     onSearchMovies();
+}
+
+function storeSearchState() {
+    if (searchQuery.value.trim() === '') {
+        SessionStorage.remove('searchQuery');
+        SessionStorage.remove('currentPage');
+        return;
+    }
+    SessionStorage.set('searchQuery', searchQuery.value);
+    SessionStorage.set('currentPage', currentPage.value);
 }
 </script>
 
