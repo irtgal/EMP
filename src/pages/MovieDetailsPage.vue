@@ -9,6 +9,9 @@
             <div class="movie-description text-body1 q-my-md">
                 {{ movie.description }}
             </div>
+            <div class="movie-genres text-body2 q-my-sm">
+                <strong>Genres:</strong> {{ genreNames }}
+            </div>
             <div class="movie-director text-body2 q-my-sm">
                 <!-- <strong>Director:</strong> {{ movie.director }} -->
             </div>
@@ -35,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import RatingControl from '../components/RatingControl.vue';
 import { Movie } from '../models/Movie';
@@ -55,6 +58,10 @@ onMounted(async () => {
 
 watch(() => route.params.id, async (id) => {
     movie.value = await movieStore.fetchAndCacheMovieDetails(Number(id));
+});
+
+const genreNames = computed(() => {
+    return movie.value?.genres?.map((genre) => genre.name).join(', ') || 'N/A';
 });
 
 const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
@@ -123,5 +130,11 @@ const BACKUP_IMAGE_URL = 'https://via.placeholder.com/300x400?text=No+Image';
 .no-movie-found {
     text-align: center;
     margin-top: 40px;
+}
+
+.movie-genres {
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 0;
 }
 </style>
